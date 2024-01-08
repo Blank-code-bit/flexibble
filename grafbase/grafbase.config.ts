@@ -1,4 +1,10 @@
-import { g, config, auth } from "@grafbase/sdk";
+import { config, connector, graph } from "@grafbase/sdk";
+
+const g = graph.Standalone();
+
+const pg = connector.Postgres("pg", {
+  url: g.env("POSTGRES_URL"),
+});
 
 const User = g.model("User", {
   name: g.string().length({ min: 2, max: 100 }),
@@ -21,4 +27,19 @@ const Project = g.model("Project", {
   githubUrl: g.url(),
   category: g.string().search(),
   createdBy: g.relation(() => User),
+});
+
+g.datasource(pg);
+
+export default config({
+  graph: g,
+  cache: {
+    rules: [
+      {
+        types: ["Query"],
+        maxAge: 60,
+        staleWhileRevalidate: 60,
+      },
+    ],
+  },
 });
