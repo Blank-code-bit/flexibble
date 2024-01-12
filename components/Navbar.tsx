@@ -23,18 +23,11 @@ const Navbar = async () => {
             </Link>
           ))}
         </ul>
+      </div>
 
-        <div className="flexCenter gap-4">
-          {session?.user ? (
-            <>
-              <ProfileMenu session={session} />
-
-              <Link href="/create-project">Share Work</Link>
-            </>
-          ) : (
-            <AuthProviders />
-          )}
-        </div>
+      <div className="flexCenter gap-4  top-0 right-0">
+        <Image src={"./eye.svg"} height={60} width={60} alt="Share" />
+        <Link href="/create-project">Share Work</Link>
       </div>
     </nav>
   );
